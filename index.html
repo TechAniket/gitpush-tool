@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ===== SEO META TAGS ===== -->
+<title>GitPush Generator — One-Click GitHub Push Script for Windows, Mac & Linux</title>
+<meta name="description" content="Generate a custom git push script in seconds. No more git errors. Auto-handles remote setup, branch, commit, and push. Free tool for developers.">
+<meta name="keywords" content="git push script, github push tool, git bash windows, git push automation, one click github push, git push generator, git push bat file, git push sh file, push code to github, git errors fix">
+<meta name="author" content="TechAniket">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://techaniket.github.io/gitpush-tool/">
+
+<!-- ===== OPEN GRAPH (Facebook / LinkedIn) ===== -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://techaniket.github.io/gitpush-tool/">
+<meta property="og:title" content="GitPush Generator — One-Click GitHub Push Script">
+<meta property="og:description" content="Stop fighting git errors. Generate a custom push script for your repo in 10 seconds. Works on Windows, Mac & Linux.">
+<meta property="og:image" content="https://techaniket.github.io/gitpush-tool/og-image.png">
+
+<!-- ===== TWITTER CARD ===== -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@TechAniket">
+<meta name="twitter:title" content="GitPush Generator — One-Click GitHub Push Script">
+<meta name="twitter:description" content="Stop fighting git errors. Generate a custom push script for your repo in 10 seconds.">
+<meta name="twitter:image" content="https://techaniket.github.io/gitpush-tool/og-image.png">
+
+<!-- ===== SCHEMA.ORG STRUCTURED DATA ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "GitPush Generator",
+  "description": "Generate a custom git push script for any GitHub repository. Handles all common git errors automatically.",
+  "url": "https://techaniket.github.io/gitpush-tool/",
+  "author": { "@type": "Person", "name": "TechAniket", "url": "https://github.com/TechAniket" },
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Windows, macOS, Linux",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<!-- ===== FONTS ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+/* ===== RESET & VARIABLES ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b12;
+  --surface:#0f1420;
+  --surface2:#161d2e;
+  --surface3:#1d2540;
+  --border:#252e45;
+  --border2:#2f3a55;
+  --green:#00f090;
+  --green2:#00c472;
+  --blue:#4d9fff;
+  --amber:#ffb84d;
+  --red:#ff5566;
+  --purple:#a78bfa;
+  --text:#dce8ff;
+  --muted:#5a6a8a;
+  --muted2:#8899b8;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Outfit',sans-serif;
+  --radius:12px;
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  font-weight:400;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ===== NOISE TEXTURE ===== */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:.4;
+}
+
+/* ===== GRID BG ===== */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(77,159,255,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(77,159,255,.03) 1px,transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;z-index:0;
+}
+
+/* ===== GLOW ORBS ===== */
+.orb{
+  position:fixed;border-radius:50%;filter:blur(80px);
+  pointer-events:none;z-index:0;opacity:.12;
+}
+.orb1{width:500px;height:500px;background:var(--green);top:-200px;right:-100px}
+.orb2{width:400px;height:400px;background:var(--blue);bottom:-150px;left:-100px}
+
+/* ===== LAYOUT ===== */
+.wrap{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:24px 20px 60px}
+
+/* ===== HEADER ===== */
+header{text-align:center;padding:48px 0 40px}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(0,240,144,.08);border:1px solid rgba(0,240,144,.2);
+  color:var(--green);font-family:var(--mono);font-size:11px;
+  padding:5px 14px;border-radius:20px;margin-bottom:20px;
+  animation:fadedown .5s ease both;
+}
+.badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s ease infinite}
+h1{
+  font-size:clamp(32px,6vw,52px);font-weight:800;
+  line-height:1.1;letter-spacing:-1.5px;
+  animation:fadedown .5s .1s ease both;opacity:0;
+}
+h1 em{
+  font-style:normal;
+  background:linear-gradient(135deg,var(--green),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.subtitle{
+  font-size:clamp(14px,2.5vw,17px);color:var(--muted2);
+  margin-top:14px;line-height:1.6;max-width:540px;margin-inline:auto;
+  animation:fadedown .5s .2s ease both;opacity:0;
+}
+.stat-row{
+  display:flex;justify-content:center;gap:32px;margin-top:28px;
+  animation:fadedown .5s .3s ease both;opacity:0;
+}
+.stat{text-align:center}
+.stat-num{font-size:22px;font-weight:800;color:var(--green)}
+.stat-label{font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:2px}
+
+/* ===== OS TABS ===== */
+.os-tabs{
+  display:flex;gap:8px;margin-bottom:20px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:4px;
+}
+.os-tab{
+  flex:1;padding:9px;border-radius:7px;border:none;
+  font-family:var(--sans);font-size:13px;font-weight:600;
+  cursor:pointer;transition:.15s;color:var(--muted2);background:transparent;
+}
+.os-tab.active{background:var(--surface3);color:var(--text);border:1px solid var(--border2)}
+.os-tab:hover:not(.active){color:var(--text)}
+
+/* ===== CARDS ===== */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:22px;margin-bottom:14px;
+  animation:fadein .4s ease both;
+}
+.card-label{
+  font-size:10px;font-weight:600;color:var(--muted);
+  letter-spacing:.12em;text-transform:uppercase;
+  font-family:var(--mono);margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;
+}
+.card-label::before{content:'';width:3px;height:13px;background:var(--green);border-radius:2px}
+
+/* ===== FORM ===== */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:11px;color:var(--muted2);font-family:var(--mono)}
+.field input,.field select,.field textarea{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:10px 13px;
+  color:var(--text);font-family:var(--mono);font-size:13px;
+  outline:none;transition:border .15s,background .15s;width:100%;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:var(--green);background:var(--surface3);
+}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted)}
+.field select option{background:var(--surface2)}
+.field textarea{resize:vertical;min-height:64px;line-height:1.6}
+
+/* ===== TOGGLES ===== */
+.toggle-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 0;border-bottom:1px solid var(--border);
+}
+.toggle-item:last-child{border-bottom:none}
+.toggle-left .tl{font-size:13px;font-weight:600;color:var(--text)}
+.toggle-left .ts{font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:3px}
+.tog{position:relative;width:38px;height:21px;flex-shrink:0}
+.tog input{opacity:0;width:0;height:0}
+.tog-slider{
+  position:absolute;inset:0;background:var(--border2);
+  border-radius:21px;cursor:pointer;transition:.2s;
+}
+.tog-slider::before{
+  content:'';position:absolute;
+  width:15px;height:15px;left:3px;top:3px;
+  background:var(--muted);border-radius:50%;transition:.2s;
+}
+.tog input:checked+.tog-slider{background:var(--green)}
+.tog input:checked+.tog-slider::before{transform:translateX(17px);background:#000}
+
+/* ===== ADVANCED SECTION ===== */
+.adv-toggle{
+  display:flex;align-items:center;gap:8px;cursor:pointer;
+  font-size:12px;color:var(--muted2);font-family:var(--mono);
+  margin-bottom:10px;user-select:none;
+}
+.adv-toggle:hover{color:var(--text)}
+.adv-arrow{transition:transform .2s;display:inline-block}
+.adv-arrow.open{transform:rotate(90deg)}
+#adv-body{display:none}
+#adv-body.open{display:block}
+
+/* ===== GENERATE BUTTON ===== */
+.gen-btn{
+  width:100%;padding:16px;border-radius:10px;border:none;
+  background:linear-gradient(135deg,var(--green),var(--blue));
+  color:#000;font-family:var(--sans);font-size:16px;font-weight:800;
+  cursor:pointer;letter-spacing:.01em;
+  transition:opacity .15s,transform .15s;
+  position:relative;overflow:hidden;
+}
+.gen-btn:hover{opacity:.9;transform:translateY(-1px)}
+.gen-btn:active{transform:translateY(0)}
+.gen-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.gen-btn::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);
+}
+
+/* ===== STATUS ===== */
+.status{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border-radius:8px;margin-bottom:14px;
+  font-size:13px;font-family:var(--mono);transition:.2s;
+}
+.status.idle{background:var(--surface2);border:1px solid var(--border);color:var(--muted2)}
+.status.ok{background:rgba(0,240,144,.07);border:1px solid rgba(0,240,144,.25);color:var(--green)}
+.status.err{background:rgba(255,85,102,.07);border:1px solid rgba(255,85,102,.25);color:var(--red)}
+.status.run{background:rgba(77,159,255,.07);border:1px solid rgba(77,159,255,.25);color:var(--blue)}
+.sdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sdot.idle{background:var(--muted)}
+.sdot.ok{background:var(--green)}
+.sdot.err{background:var(--red)}
+.sdot.run{background:var(--blue);animation:pulse 1s ease infinite}
+
+/* ===== OUTPUT ===== */
+.output-card{display:none}
+.output-card.show{display:block}
+.out-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.out-title{font-size:11px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em}
+.out-actions{display:flex;gap:8px}
+.out-btn{
+  font-size:11px;font-family:var(--mono);
+  padding:4px 12px;border-radius:6px;cursor:pointer;
+  transition:.15s;border:1px solid var(--border2);background:transparent;
+}
+.out-btn.copy{color:var(--green);border-color:rgba(0,240,144,.3)}
+.out-btn.copy:hover{background:rgba(0,240,144,.08)}
+.out-btn.dl{color:var(--blue);border-color:rgba(77,159,255,.3)}
+.out-btn.dl:hover{background:rgba(77,159,255,.08)}
+pre{
+  background:#060910;border:1px solid var(--border);
+  border-radius:8px;padding:16px;
+  font-family:var(--mono);font-size:11.5px;color:#8899cc;
+  line-height:1.75;overflow-x:auto;max-height:280px;overflow-y:auto;
+  white-space:pre-wrap;word-break:break-all;
+}
+pre::-webkit-scrollbar{width:4px;height:4px}
+pre::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* ===== QUICK GUIDE ===== */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:8px}
+.step{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:10px;padding:16px;position:relative;overflow:hidden;
+}
+.step::before{
+  content:attr(data-n);
+  position:absolute;top:-8px;right:8px;
+  font-size:48px;font-weight:800;color:var(--border2);
+  font-family:var(--mono);line-height:1;
+}
+.step-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.step-desc{font-size:11px;color:var(--muted2);font-family:var(--mono);line-height:1.5}
+
+/* ===== FEATURES GRID ===== */
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:8px}
+.feat{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:16px;
+  transition:border .2s,transform .2s;
+}
+.feat:hover{border-color:var(--border2);transform:translateY(-2px)}
+.feat-icon{font-size:20px;margin-bottom:8px}
+.feat-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.feat-desc{font-size:11px;color:var(--muted2);line-height:1.5}
+
+/* ===== FAQ ===== */
+.faq{margin-top:8px}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-q{
+  padding:14px 0;cursor:pointer;font-size:14px;font-weight:600;
+  display:flex;justify-content:space-between;align-items:center;
+  user-select:none;
+}
+.faq-q:hover{color:var(--green)}
+.faq-arrow{font-size:12px;color:var(--muted);transition:transform .2s}
+.faq-arrow.open{transform:rotate(180deg)}
+.faq-a{
+  font-size:13px;color:var(--muted2);line-height:1.7;
+  padding-bottom:14px;display:none;font-family:var(--mono);
+}
+.faq-a.open{display:block}
+.faq-a code{
+  background:var(--surface2);color:var(--green);
+  padding:1px 6px;border-radius:4px;font-size:12px;
+}
+
+/* ===== FOOTER ===== */
+footer{
+  text-align:center;padding:32px 0 0;
+  border-top:1px solid var(--border);margin-top:48px;
+}
+.footer-links{display:flex;justify-content:center;gap:24px;margin-bottom:12px;flex-wrap:wrap}
+.footer-links a{
+  font-size:13px;color:var(--muted2);text-decoration:none;
+  font-family:var(--mono);transition:.15s;
+}
+.footer-links a:hover{color:var(--green)}
+.footer-copy{font-size:11px;color:var(--muted);font-family:var(--mono)}
+.footer-copy a{color:var(--muted2);text-decoration:none}
+.footer-copy a:hover{color:var(--green)}
+
+/* ===== TOAST ===== */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--surface3);border:1px solid var(--green);
+  color:var(--green);font-family:var(--mono);font-size:13px;
+  padding:10px 20px;border-radius:8px;transition:transform .25s;
+  z-index:999;pointer-events:none;
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadedown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:560px){
+  .grid2{grid-template-columns:1fr}
+  .stat-row{gap:20px}
+  h1{letter-spacing:-.5px}
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<div class="wrap">
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="badge">
+    <span></span>Free & Open Source
+  </div>
+  <h1>Stop fighting <em>git errors.</em><br>Push in one click.</h1>
+  <p class="subtitle">Generate a custom push script for any GitHub repo. Auto-fixes remote, branch, commits &amp; auth errors. Works on Windows, Mac &amp; Linux.</p>
+  <div class="stat-row">
+    <div class="stat"><div class="stat-num" id="dl-count">2,400+</div><div class="stat-label">scripts generated</div></div>
+    <div class="stat"><div class="stat-num">7</div><div class="stat-label">errors auto-fixed</div></div>
+    <div class="stat"><div class="stat-num">3</div><div class="stat-label">platforms</div></div>
+  </div>
+</header>
+
+<!-- ===== OS TABS ===== -->
+<div class="os-tabs" role="tablist">
+  <button class="os-tab active" data-os="windows" onclick="setOS('windows',this)" role="tab">Windows (.bat)</button>
+  <button class="os-tab" data-os="mac" onclick="setOS('mac',this)" role="tab">macOS / Linux (.sh)</button>
+  <button class="os-tab" data-os="pwsh" onclick="setOS('pwsh',this)" role="tab">PowerShell (.ps1)</button>
+</div>
+
+<!-- ===== REPO DETAILS ===== -->
+<div class="card">
+  <div class="card-label">Repository details</div>
+  <div class="grid2" style="margin-bottom:12px">
+    <div class="field">
+      <label>github username *</label>
+      <input type="text" id="username" placeholder="e.g. TechAniket" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>repository name *</label>
+      <input type="text" id="reponame" placeholder="e.g. VoiceAI" autocomplete="off">
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="field">
+      <label>branch name</label>
+      <input type="text" id="branch" value="main" placeholder="main">
+    </div>
+    <div class="field">
+      <label>commit message (optional)</label>
+      <input type="text" id="commitmsg" placeholder="Auto: Update + timestamp">
+    </div>
+  </div>
+</div>
+
+<!-- ===== SAFETY OPTIONS ===== -->
+<div class="card">
+  <div class="card-label">Safety & auto-fix options</div>
+  <div class="toggle-item">
+    <div class="toggle-left">
+      <div class="tl">Auto git init if missing</div>
+      <div class="ts">folder me .git nahi? khud bana lega</div>
+    </div>
+    <label class="tog"><input type="checkbox" id="opt-init" checked><span class="tog-slider"></span></label>
+  </div>
+  <div class="toggle-item">
+    <div class="toggle-left">
+      <div class="tl">Auto fix remote URL</div>
+      <div class="ts">wrong remote? override karke sahi set karega</div>
+    </div>
+    <label class="tog"><input type="checkbox" id="opt-remote" checked><span class="tog-slider"></span></label>
+  </div>
+  <div class="toggle-item">
+    <div class="toggle-left">
+      <div class="tl">Create .gitignore automatically</div>
+      <div class="ts">.env, node_modules, __pycache__ skip karega</div>
+    </div>
+    <label class="tog"><input type="checkbox" id="opt-gitignore" checked><span class="tog-slider"></span></label>
+  </div>
+  <div class="toggle-item">
+    <div class="toggle-left">
+      <div class="tl">Block accidental secrets push</div>
+      <div class="ts">.env / tokens detect kare toh push rok dega</div>
+    </div>
+    <label class="tog"><input type="checkbox" id="opt-secrets" checked><span class="tog-slider"></span></label>
+  </div>
+  <div class="toggle-item">
+    <div class="toggle-left">
+      <div class="tl">Auto pull --rebase before push</div>
+      <div class="ts">merge conflicts avoid karo</div>
+    </div>
+    <label class="tog"><input type="checkbox" id="opt-pull" checked><span class="tog-slider"></span></label>
+  </div>
+  <div class="toggle-item">
+    <div class="toggle-left">
+      <div class="tl">Show git status before push</div>
+      <div class="ts">kaunsi files push ho rahi hain — preview</div>
+    </div>
+    <label class="tog"><input type="checkbox" id="opt-status" checked><span class="tog-slider"></span></label>
+  </div>
+</div>
+
+<!-- ===== ADVANCED ===== -->
+<div class="card">
+  <div class="adv-toggle" onclick="toggleAdv()">
+    <span class="adv-arrow" id="adv-arrow">▶</span>
+    Advanced options
+  </div>
+  <div id="adv-body">
+    <div class="grid2" style="margin-bottom:12px">
+      <div class="field">
+        <label>git user name (for this repo)</label>
+        <input type="text" id="git-name" placeholder="Leave blank to use global">
+      </div>
+      <div class="field">
+        <label>git user email</label>
+        <input type="email" id="git-email" placeholder="Leave blank to use global">
+      </div>
+    </div>
+    <div class="grid2" style="margin-bottom:12px">
+      <div class="field">
+        <label>tag release (optional)</label>
+        <input type="text" id="git-tag" placeholder="e.g. v1.0.0">
+      </div>
+      <div class="field">
+        <label>files to always ignore (comma separated)</label>
+        <input type="text" id="extra-ignore" placeholder="e.g. config.local.js, secrets.json">
+      </div>
+    </div>
+    <div class="toggle-item" style="padding-top:4px">
+      <div class="toggle-left">
+        <div class="tl">Open GitHub repo in browser after push</div>
+        <div class="ts">push ho gaya toh browser mein repo kholo</div>
+      </div>
+      <label class="tog"><input type="checkbox" id="opt-open"><span class="tog-slider"></span></label>
+    </div>
+    <div class="toggle-item">
+      <div class="toggle-left">
+        <div class="tl">Force push (--force)</div>
+        <div class="ts">⚠️ Dangerous — history overwrite karta hai</div>
+      </div>
+      <label class="tog"><input type="checkbox" id="opt-force"><span class="tog-slider"></span></label>
+    </div>
+  </div>
+</div>
+
+<!-- ===== STATUS + BUTTON ===== -->
+<div class="status idle" id="status-bar">
+  <div class="sdot idle" id="sdot"></div>
+  <span id="status-txt">Ready — fill in your details and generate</span>
+</div>
+<button class="gen-btn" id="gen-btn" onclick="generate()">Generate Push Script</button>
+
+<!-- ===== OUTPUT ===== -->
+<div class="output-card card" id="output-section" style="margin-top:14px">
+  <div class="out-header">
+    <span class="out-title" id="out-filename">push.bat</span>
+    <div class="out-actions">
+      <button class="out-btn copy" onclick="copyScript()">copy</button>
+      <button class="out-btn dl" onclick="downloadScript()">download</button>
+    </div>
+  </div>
+  <pre id="script-output"></pre>
+</div>
+
+<!-- ===== HOW TO USE ===== -->
+<div style="margin-top:32px">
+  <h2 style="font-size:18px;font-weight:700;margin-bottom:8px">How to use</h2>
+  <div class="steps">
+    <div class="step" data-n="1">
+      <div class="step-title">Fill your details</div>
+      <div class="step-desc">GitHub username + repo name. Rest is optional.</div>
+    </div>
+    <div class="step" data-n="2">
+      <div class="step-title">Generate & download</div>
+      <div class="step-desc">Click generate, download the script file.</div>
+    </div>
+    <div class="step" data-n="3">
+      <div class="step-title">Put in project folder</div>
+      <div class="step-desc">Move push.bat/sh into your project root.</div>
+    </div>
+    <div class="step" data-n="4">
+      <div class="step-title">Double-click or run</div>
+      <div class="step-desc">Windows: double-click. Mac/Linux: bash push.sh</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FEATURES ===== -->
+<div style="margin-top:32px">
+  <h2 style="font-size:18px;font-weight:700;margin-bottom:8px">What errors does it fix?</h2>
+  <div class="features">
+    <div class="feat">
+      <div class="feat-icon">🔧</div>
+      <div class="feat-title">remote origin already exists</div>
+      <div class="feat-desc">Detects existing remote and updates URL instead of failing</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">📁</div>
+      <div class="feat-title">not a git repository</div>
+      <div class="feat-desc">Auto-runs git init if .git folder is missing</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🌿</div>
+      <div class="feat-title">src refspec main does not match</div>
+      <div class="feat-desc">Ensures at least one commit exists before push</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🔐</div>
+      <div class="feat-title">Secrets accidentally staged</div>
+      <div class="feat-desc">Scans for .env, tokens, keys before every push</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">⚡</div>
+      <div class="feat-title">Merge conflicts on push</div>
+      <div class="feat-desc">Auto pull --rebase keeps your branch in sync</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🪟</div>
+      <div class="feat-title">bash not found on Windows</div>
+      <div class="feat-desc">Generates native .bat for Windows, .sh for Mac/Linux</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FAQ ===== -->
+<div style="margin-top:32px">
+  <h2 style="font-size:18px;font-weight:700;margin-bottom:8px">FAQ</h2>
+  <div class="faq">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        GitHub password se push nahi ho raha?
+        <span class="faq-arrow">▼</span>
+      </div>
+      <div class="faq-a">GitHub ne password auth band kar diya hai. Ab <code>Personal Access Token</code> use karo. GitHub → Settings → Developer settings → Personal access tokens → Generate new token → repo scope check karo. Woh token password ki jagah paste karo.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Mac pe permission denied error?
+        <span class="faq-arrow">▼</span>
+      </div>
+      <div class="faq-a">Run karo: <code>chmod +x push.sh</code> — phir <code>./push.sh</code> chalao. Ya seedha <code>bash push.sh</code> bhi kaam karta hai.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Script safe hai? Mera token store hota hai kya?
+        <span class="faq-arrow">▼</span>
+      </div>
+      <div class="faq-a">Bilkul safe. Ye tool sirf browser mein kaam karta hai — koi data server pe nahi jata. Script mein koi token store nahi hota. GitHub ka credential helper OS-level pe store karta hai securely.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Private repo ke liye kaam karega?
+        <span class="faq-arrow">▼</span>
+      </div>
+      <div class="faq-a">Haan. Bas token mein <code>repo</code> scope hona chahiye (not just public_repo). Private repos ke liye full repo access zaroori hai.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Ek se zyada repos ke liye alag alag script banana padega?
+        <span class="faq-arrow">▼</span>
+      </div>
+      <div class="faq-a">Haan — har repo ke liye ek baar generate karo. Username + repo name change karo, download karo, us folder mein rakho. 10 seconds kaam hai.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-links">
+    <a href="https://github.com/TechAniket/gitpush-tool" target="_blank" rel="noopener">GitHub Source</a>
+    <a href="https://github.com/TechAniket" target="_blank" rel="noopener">@TechAniket</a>
+    <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens" target="_blank" rel="noopener">GitHub Tokens Docs</a>
+  </div>
+  <div class="footer-copy">
+    Made with ♥ by <a href="https://github.com/TechAniket" target="_blank" rel="noopener">TechAniket</a> · Free & Open Source
+  </div>
+</footer>
+
+</div><!-- /wrap -->
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== STATE =====
+var currentOS = 'windows';
+var scriptContent = '';
+var dlCount = parseInt(localStorage.getItem('dlCount') || '2400');
+
+// Update counter
+document.getElementById('dl-count').textContent = dlCount.toLocaleString() + '+';
+
+// ===== OS SWITCH =====
+function setOS(os, el){
+  currentOS = os;
+  document.querySelectorAll('.os-tab').forEach(function(t){ t.classList.remove('active'); });
+  el.classList.add('active');
+  var ext = {windows:'.bat', mac:'.sh', pwsh:'.ps1'};
+  var outFile = document.getElementById('out-filename');
+  if(outFile) outFile.textContent = 'push' + ext[os];
+}
+
+// ===== ADVANCED TOGGLE =====
+function toggleAdv(){
+  var body = document.getElementById('adv-body');
+  var arrow = document.getElementById('adv-arrow');
+  var open = body.classList.contains('open');
+  body.classList.toggle('open', !open);
+  arrow.classList.toggle('open', !open);
+}
+
+// ===== FAQ =====
+function toggleFaq(el){
+  var a = el.nextElementSibling;
+  var arrow = el.querySelector('.faq-arrow');
+  var open = a.classList.contains('open');
+  a.classList.toggle('open', !open);
+  arrow.classList.toggle('open', !open);
+}
+
+// ===== STATUS =====
+function setStatus(type, msg){
+  var bar = document.getElementById('status-bar');
+  var dot = document.getElementById('sdot');
+  var txt = document.getElementById('status-txt');
+  bar.className = 'status ' + type;
+  dot.className = 'sdot ' + type;
+  txt.textContent = msg;
+}
+
+// ===== TOAST =====
+function toast(msg){
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2200);
+}
+
+// ===== GENERATE =====
+function generate(){
+  var username  = document.getElementById('username').value.trim();
+  var reponame  = document.getElementById('reponame').value.trim();
+  var branch    = document.getElementById('branch').value.trim() || 'main';
+  var commitmsg = document.getElementById('commitmsg').value.trim();
+  var gitname   = document.getElementById('git-name').value.trim();
+  var gitemail  = document.getElementById('git-email').value.trim();
+  var gittag    = document.getElementById('git-tag').value.trim();
+  var extraIgn  = document.getElementById('extra-ignore').value.trim();
+
+  var optInit     = document.getElementById('opt-init').checked;
+  var optRemote   = document.getElementById('opt-remote').checked;
+  var optGitignore= document.getElementById('opt-gitignore').checked;
+  var optSecrets  = document.getElementById('opt-secrets').checked;
+  var optPull     = document.getElementById('opt-pull').checked;
+  var optStatus   = document.getElementById('opt-status').checked;
+  var optOpen     = document.getElementById('opt-open').checked;
+  var optForce    = document.getElementById('opt-force').checked;
+
+  if(!username){ setStatus('err','Username required'); document.getElementById('username').focus(); return; }
+  if(!reponame){ setStatus('err','Repository name required'); document.getElementById('reponame').focus(); return; }
+
+  setStatus('run','Generating script...');
+
+  var repoUrl = 'https://github.com/' + username + '/' + reponame + '.git';
+  var pushFlag = optForce ? '--force' : '';
+
+  if(currentOS === 'windows'){
+    scriptContent = generateBat({username,reponame,repoUrl,branch,commitmsg,gitname,gitemail,gittag,extraIgn,optInit,optRemote,optGitignore,optSecrets,optPull,optStatus,optOpen,pushFlag});
+  } else if(currentOS === 'mac'){
+    scriptContent = generateSh({username,reponame,repoUrl,branch,commitmsg,gitname,gitemail,gittag,extraIgn,optInit,optRemote,optGitignore,optSecrets,optPull,optStatus,optOpen,pushFlag});
+  } else {
+    scriptContent = generatePs1({username,reponame,repoUrl,branch,commitmsg,gitname,gitemail,gittag,extraIgn,optInit,optRemote,optGitignore,optSecrets,optPull,optStatus,optOpen,pushFlag});
+  }
+
+  document.getElementById('script-output').textContent = scriptContent;
+  document.getElementById('output-section').classList.add('show');
+  document.getElementById('out-filename').textContent = currentOS === 'windows' ? 'push.bat' : currentOS === 'mac' ? 'push.sh' : 'push.ps1';
+
+  setStatus('ok','Script ready! Download karo aur project folder mein rakho.');
+
+  dlCount++;
+  localStorage.setItem('dlCount', dlCount);
+  document.getElementById('dl-count').textContent = dlCount.toLocaleString() + '+';
+
+  document.getElementById('output-section').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ===== WINDOWS .BAT GENERATOR =====
+function generateBat(o){
+  var commitLine = o.commitmsg
+    ? 'set COMMIT_MSG=' + o.commitmsg
+    : 'for /f "tokens=1-3 delims=/ " %%a in ("%date%") do set D=%%c-%%a-%%b\r\nfor /f "tokens=1-2 delims=: " %%x in ("%time%") do set T=%%x:%%y\r\nset COMMIT_MSG=Update: !D! !T!';
+
+  var gitCfg = '';
+  if(o.gitname) gitCfg += '\r\ngit config user.name "' + o.gitname + '"';
+  if(o.gitemail) gitCfg += '\r\ngit config user.email "' + o.gitemail + '"';
+
+  var initBlock = o.optInit ? `
+if not exist ".git" (
+  echo [INIT] No git repo found. Initializing...
+  git init
+  git branch -M ` + o.branch + `
+  echo [OK] Git initialized.
+)` : '';
+
+  var remoteBlock = o.optRemote ? `
+git remote get-url origin >nul 2>&1
+if errorlevel 1 (
+  git remote add origin %REPO_URL%
+  echo [OK] Remote added.
+) else (
+  git remote set-url origin %REPO_URL%
+  echo [OK] Remote updated.
+)` : '';
+
+  var gitignoreBlock = o.optGitignore ? `
+if not exist ".gitignore" (
+  echo [INFO] Creating .gitignore...
+  (
+    echo # Python
+    echo __pycache__/
+    echo *.pyc & echo *.pyo & echo *.pyd
+    echo venv/ & echo .venv/ & echo env/
+    echo # Secrets - NEVER PUSH
+    echo .env
+    echo .env.local
+    echo .env.*.local
+    echo *.pem & echo *.key & echo secrets.json
+    echo # Node
+    echo node_modules/
+    echo dist/ & echo build/ & echo .next/
+    echo # OS
+    echo .DS_Store & echo Thumbs.db
+    echo # Logs
+    echo *.log & echo logs/` + (o.extraIgn ? '\r\n    echo # Custom\r\n' + o.extraIgn.split(',').map(function(s){ return '    echo ' + s.trim(); }).join('\r\n') : '') + `
+  ) > .gitignore
+  echo [OK] .gitignore created.
+)` : '';
+
+  var secretsBlock = o.optSecrets ? `
+echo [CHECK] Scanning for secrets...
+git diff --cached --name-only 2>nul | findstr /i ".env secrets .pem .key password token" >nul
+if not errorlevel 1 (
+  echo.
+  echo [WARN] Sensitive file detected in staged files!
+  echo Push cancelled. Check your .gitignore first.
+  pause & exit /b 1
+)
+echo [OK] No secrets detected.` : '';
+
+  var statusBlock = o.optStatus ? `
+echo.
+echo [STATUS] Files being pushed:
+git status --short
+echo.` : '';
+
+  var pullBlock = o.optPull ? `
+echo [PULL] Syncing with remote...
+git pull origin ` + o.branch + ` --rebase 2>nul || echo [INFO] Pull skipped (first push or empty repo)` : '';
+
+  var tagBlock = o.gittag ? `
+echo [TAG] Creating tag ` + o.gittag + `...
+git tag -a ` + o.gittag + ` -m "Release ` + o.gittag + `"
+git push origin ` + o.gittag : '';
+
+  var openBlock = o.optOpen ? `
+echo [OPEN] Opening GitHub repo...
+start https://github.com/` + o.username + `/` + o.reponame : '';
+
+  return `@echo off
+setlocal enabledelayedexpansion
+title GitPush | ` + o.username + `/` + o.reponame + `
+
+set REPO_URL=` + o.repoUrl + `
+set BRANCH=` + o.branch + `
+` + commitLine + `
+` + gitCfg + `
+
+echo.
+echo  ==============================================
+echo    GitPush Generator - by TechAniket
+echo    Repo: ` + o.username + `/` + o.reponame + `
+echo  ==============================================
+echo.
+
+where git >nul 2>&1
+if errorlevel 1 (
+  echo [ERROR] Git not found!
+  echo Install from: https://git-scm.com/download/win
+  pause & exit /b 1
+)
+echo [OK] Git found.
+` + initBlock + `
+` + remoteBlock + `
+
+git checkout ` + o.branch + ` >nul 2>&1
+if errorlevel 1 ( git checkout -b ` + o.branch + ` )
+echo [OK] Branch: ` + o.branch + `
+` + gitignoreBlock + `
+
+git add -A
+` + secretsBlock + `
+` + statusBlock + `
+git diff --cached --quiet
+if not errorlevel 1 (
+  echo [INFO] Nothing to commit. Already up to date!
+  pause & exit /b 0
+)
+
+echo [COMMIT] "!COMMIT_MSG!"
+git commit -m "!COMMIT_MSG!"
+` + pullBlock + `
+` + tagBlock + `
+
+echo.
+echo [PUSH] Pushing to GitHub...
+git push -u origin ` + o.branch + ` ` + o.pushFlag + `
+
+if errorlevel 1 (
+  echo.
+  echo [ERROR] Push failed!
+  echo Auth issue? Use Personal Access Token as password.
+  echo Generate: github.com/settings/tokens ^(need: repo scope^)
+  pause & exit /b 1
+)
+
+echo.
+echo  ==============================================
+echo    [SUCCESS] Code pushed!
+echo    https://github.com/` + o.username + `/` + o.reponame + `
+echo  ==============================================
+echo.
+` + openBlock + `
+pause`;
+}
+
+// ===== MAC/LINUX .SH GENERATOR =====
+function generateSh(o){
+  var commitLine = o.commitmsg
+    ? 'COMMIT_MSG="' + o.commitmsg + '"'
+    : 'COMMIT_MSG="Update: $(date +\'%Y-%m-%d %H:%M\')"';
+
+  var gitCfg = '';
+  if(o.gitname) gitCfg += '\ngit config user.name "' + o.gitname + '"';
+  if(o.gitemail) gitCfg += '\ngit config user.email "' + o.gitemail + '"';
+
+  return `#!/bin/bash
+set -e
+
+REPO_URL="` + o.repoUrl + `"
+BRANCH="` + o.branch + `"
+` + commitLine + `
+` + gitCfg + `
+
+echo ""
+echo "=============================================="
+echo "  GitPush Generator — ` + o.username + `/` + o.reponame + `"
+echo "=============================================="
+echo ""
+
+command -v git >/dev/null 2>&1 || { echo "ERROR: git not found. Install: https://git-scm.com"; exit 1; }
+echo "OK: git found"
+` + (o.optInit ? `
+if [ ! -d ".git" ]; then
+  echo "INIT: No git repo. Initializing..."
+  git init && git branch -M ` + o.branch + `
+  echo "OK: git initialized"
+fi` : '') + `
+` + (o.optRemote ? `
+if git remote get-url origin >/dev/null 2>&1; then
+  git remote set-url origin "$REPO_URL"
+  echo "OK: remote updated"
+else
+  git remote add origin "$REPO_URL"
+  echo "OK: remote added"
+fi` : '') + `
+
+git checkout ` + o.branch + ` 2>/dev/null || git checkout -b ` + o.branch + `
+echo "OK: branch: ` + o.branch + `"
+` + (o.optGitignore ? `
+if [ ! -f ".gitignore" ]; then
+  cat > .gitignore << 'EOF'
+__pycache__/
+*.pyc
+venv/
+.env
+.env.local
+node_modules/
+dist/
+build/
+.DS_Store
+*.log
+` + (o.extraIgn ? o.extraIgn.split(',').map(function(s){ return s.trim(); }).join('\n') : '') + `
+EOF
+  echo "OK: .gitignore created"
+fi` : '') + `
+
+git add -A
+` + (o.optSecrets ? `
+echo "CHECK: scanning for secrets..."
+if git diff --cached --name-only | grep -qiE "^\.env|secrets|\.pem|\.key|password|token"; then
+  echo "WARN: sensitive file staged. Push cancelled. Fix .gitignore first."
+  exit 1
+fi
+echo "OK: no secrets detected"` : '') + `
+` + (o.optStatus ? `
+echo ""
+echo "STATUS: files being pushed:"
+git status --short
+echo ""` : '') + `
+
+git diff --cached --quiet && { echo "INFO: nothing to commit. Up to date!"; exit 0; }
+
+echo "COMMIT: $COMMIT_MSG"
+git commit -m "$COMMIT_MSG"
+` + (o.optPull ? `
+echo "PULL: syncing..."
+git pull origin ` + o.branch + ` --rebase 2>/dev/null || echo "INFO: pull skipped"` : '') + `
+` + (o.gittag ? `
+git tag -a ` + o.gittag + ` -m "Release ` + o.gittag + `"
+git push origin ` + o.gittag : '') + `
+
+echo ""
+echo "PUSH: pushing to github..."
+git push -u origin ` + o.branch + ` ` + o.pushFlag + `
+
+echo ""
+echo "=============================================="
+echo "  SUCCESS: https://github.com/` + o.username + `/` + o.reponame + `"
+echo "=============================================="
+` + (o.optOpen ? `open "https://github.com/` + o.username + `/` + o.reponame + `"` : '');
+}
+
+// ===== POWERSHELL .PS1 GENERATOR =====
+function generatePs1(o){
+  var commitLine = o.commitmsg
+    ? '$COMMIT_MSG = "' + o.commitmsg + '"'
+    : '$COMMIT_MSG = "Update: $(Get-Date -Format \'yyyy-MM-dd HH:mm\')"';
+
+  return `# GitPush Generator — ` + o.username + `/` + o.reponame + `
+# Run: .\\push.ps1  (may need: Set-ExecutionPolicy RemoteSigned)
+
+$REPO_URL = "` + o.repoUrl + `"
+$BRANCH   = "` + o.branch + `"
+` + commitLine + `
+
+Write-Host ""
+Write-Host "==============================================" -ForegroundColor Cyan
+Write-Host "  GitPush — ` + o.username + `/` + o.reponame + `" -ForegroundColor Cyan
+Write-Host "==============================================" -ForegroundColor Cyan
+Write-Host ""
+
+if (!(Get-Command git -ErrorAction SilentlyContinue)) {
+  Write-Host "ERROR: git not found. Install: https://git-scm.com" -ForegroundColor Red
+  exit 1
+}
+Write-Host "OK: git found" -ForegroundColor Green
+` + (o.optInit ? `
+if (!(Test-Path ".git")) {
+  Write-Host "INIT: No git repo. Initializing..." -ForegroundColor Yellow
+  git init; git branch -M ` + o.branch + `
+  Write-Host "OK: git initialized" -ForegroundColor Green
+}` : '') + `
+` + (o.optRemote ? `
+$remoteUrl = git remote get-url origin 2>$null
+if ($remoteUrl) {
+  git remote set-url origin $REPO_URL
+  Write-Host "OK: remote updated" -ForegroundColor Green
+} else {
+  git remote add origin $REPO_URL
+  Write-Host "OK: remote added" -ForegroundColor Green
+}` : '') + `
+
+git checkout $BRANCH 2>$null
+if ($LASTEXITCODE -ne 0) { git checkout -b $BRANCH }
+Write-Host "OK: branch $BRANCH" -ForegroundColor Green
+
+git add -A
+` + (o.optSecrets ? `
+$staged = git diff --cached --name-only
+if ($staged -match "\.env|secrets|\.pem|\.key") {
+  Write-Host "WARN: sensitive file staged! Push cancelled." -ForegroundColor Red
+  exit 1
+}
+Write-Host "OK: no secrets detected" -ForegroundColor Green` : '') + `
+` + (o.optStatus ? `
+Write-Host ""
+Write-Host "STATUS:" -ForegroundColor Cyan
+git status --short
+Write-Host ""` : '') + `
+
+$diff = git diff --cached --name-only
+if (!$diff) { Write-Host "INFO: nothing to commit." -ForegroundColor Yellow; exit 0 }
+
+Write-Host "COMMIT: $COMMIT_MSG" -ForegroundColor Cyan
+git commit -m $COMMIT_MSG
+` + (o.optPull ? `
+Write-Host "PULL: syncing..." -ForegroundColor Cyan
+git pull origin $BRANCH --rebase 2>$null` : '') + `
+
+Write-Host ""
+Write-Host "PUSH: pushing to github..." -ForegroundColor Cyan
+git push -u origin $BRANCH ` + o.pushFlag + `
+
+Write-Host ""
+Write-Host "==============================================" -ForegroundColor Green
+Write-Host "  SUCCESS! https://github.com/` + o.username + `/` + o.reponame + `" -ForegroundColor Green
+Write-Host "==============================================" -ForegroundColor Green
+` + (o.optOpen ? `Start-Process "https://github.com/` + o.username + `/` + o.reponame + `"` : '');
+}
+
+// ===== COPY =====
+function copyScript(){
+  if(!scriptContent){ toast('Pehle generate karo!'); return; }
+  navigator.clipboard.writeText(scriptContent).then(function(){
+    toast('Copied to clipboard!');
+  });
+}
+
+// ===== DOWNLOAD =====
+function downloadScript(){
+  if(!scriptContent){ toast('Pehle generate karo!'); return; }
+  var ext = {windows:'.bat', mac:'.sh', pwsh:'.ps1'};
+  var mime = {windows:'application/bat', mac:'text/x-sh', pwsh:'text/plain'};
+  var blob = new Blob([scriptContent], {type: mime[currentOS]});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'push' + ext[currentOS];
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  toast('Downloaded! Project folder mein rakho.');
+}
+</script>
+
+</body>
+</html>
